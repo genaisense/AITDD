@@ -23,9 +23,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.webjars.npm:htmx.org:2.0.3")
+    implementation("org.webjars:webjars-locator-core")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
