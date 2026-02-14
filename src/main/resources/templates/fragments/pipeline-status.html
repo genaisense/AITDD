@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="card">
+        <h2>Status: <span class="status" th:classappend="'status-' + ${run.status}" th:text="${run.status}">RUNNING</span></h2>
+
+        <div class="stepper">
+            <span class="step" th:classappend="${run.currentPhase.name() == 'SPECIFICATION'} ? 'active' : (${run.specification != null} ? 'done' : '')">SPECIFICATION</span>
+            <span class="step" th:classappend="${run.currentPhase.name() == 'ARCHITECTURE'} ? 'active' : (${run.architecture != null} ? 'done' : '')">ARCHITECTURE</span>
+            <span class="step" th:classappend="${run.currentPhase.name() == 'TEST_GENERATION'} ? 'active' : (${run.testCode != null} ? 'done' : '')">TEST_GENERATION</span>
+            <span class="step" th:classappend="${run.currentPhase.name() == 'IMPLEMENTATION'} ? 'active' : (${run.implementation != null} ? 'done' : '')">IMPLEMENTATION</span>
+            <span class="step" th:classappend="${run.currentPhase.name() == 'EXECUTION'} ? 'active' : (${run.executionResult != null} ? 'done' : '')">EXECUTION</span>
+        </div>
+    </div>
+
+    <div class="card" th:if="${run.specification != null}">
+        <h2>Specification (Agent 0)</h2>
+        <pre th:text="${run.specification}"></pre>
+    </div>
+
+    <div class="card" th:if="${run.architecture != null}">
+        <h2>Architecture (Agent 1)</h2>
+        <pre th:text="${run.architecture}"></pre>
+    </div>
+
+    <div class="card" th:if="${run.testCode != null}">
+        <h2>Test Code (Agent 2)</h2>
+        <pre th:text="${run.testCode}"></pre>
+    </div>
+
+    <div class="card" th:if="${run.implementation != null}">
+        <h2>Implementation (Agent 3)</h2>
+        <pre th:text="${run.implementation}"></pre>
+    </div>
+
+    <div class="card" th:if="${run.executionResult != null}">
+        <h2>Execution Result</h2>
+        <p><strong>Status:</strong> <span th:text="${run.executionResult.statusDescription}">Accepted</span>
+           | <strong>Passed:</strong> <span th:text="${run.executionResult.passed}">true</span></p>
+        <div th:if="${not run.executionResult.stdout.empty}">
+            <h3 style="margin-top:0.75rem;margin-bottom:0.25rem;font-size:0.9rem">stdout</h3>
+            <pre th:text="${run.executionResult.stdout}"></pre>
+        </div>
+        <div th:if="${not run.executionResult.stderr.empty}">
+            <h3 style="margin-top:0.75rem;margin-bottom:0.25rem;font-size:0.9rem">stderr</h3>
+            <pre th:text="${run.executionResult.stderr}"></pre>
+        </div>
+    </div>
+
+    <div class="card" th:if="${not run.retryAttempts.empty}">
+        <h2>Retry Attempts</h2>
+        <div class="retry" th:each="attempt : ${run.retryAttempts}">
+            <h3>Attempt #<span th:text="${attempt.attemptNumber}">1</span></h3>
+            <p><strong>Result:</strong> <span th:text="${attempt.executionResult.statusDescription}">Error</span></p>
+            <pre th:text="${attempt.executionResult.stderr}" th:if="${not attempt.executionResult.stderr.empty}"></pre>
+        </div>
+    </div>
+
+    <div class="card" th:if="${run.errorMessage != null}">
+        <h2>Error</h2>
+        <div class="error" th:text="${run.errorMessage}"></div>
+    </div>
+</div>
+</body>
+</html>
