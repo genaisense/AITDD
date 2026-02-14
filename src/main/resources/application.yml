@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: aitdd
+
+server:
+  port: 8080
